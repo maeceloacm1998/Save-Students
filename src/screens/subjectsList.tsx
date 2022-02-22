@@ -1,23 +1,52 @@
-import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 
-import {Picker} from '@react-native-picker/picker';
 import Header from '../components/header/header';
+import PickerSelect from '../components/picker-select/picker-select';
+
+const array = [
+  {
+    label: 'Selecione',
+    value: '',
+  },
+  {
+    label: 'aqui',
+    value: 'aqui',
+  },
+  {
+    label: 'dali',
+    value: 'dali',
+  },
+  {
+    label: 'Java',
+    value: 'Java',
+  },
+  {
+    label: 'Yula',
+    value: 'Yula',
+  },
+  {
+    label: 'Americanas',
+    value: 'Americanas',
+  },
+  {
+    label: 'Iola',
+    value: 'Iola',
+  },
+  {
+    label: 'polita',
+    value: 'polita',
+  },
+];
 
 function SubjectList() {
-  const [selectedLanguage, setSelectedLanguage] = useState();
-
+  const item = (value: string) => {
+    console.log(value);
+  };
   return (
     <View>
       <Header />
-      <Picker
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue, itemIndex) =>
-          setSelectedLanguage(itemValue)
-        }>
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
-      </Picker>
+      <PickerSelect listPickerItem={array} itemSelected={item} />
     </View>
   );
 }
