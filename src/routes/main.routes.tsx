@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Teste from '../screens/teste';
+import SubjectList from '../screens/subjectsList';
 
 const Stack = createStackNavigator();
 
@@ -10,7 +10,7 @@ function MainRoute() {
     <Stack.Navigator>
       <Stack.Screen
         name="Tickets"
-        component={Teste}
+        component={SubjectList}
         options={{
           headerShown: false,
         }}
