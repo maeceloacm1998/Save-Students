@@ -10,4 +10,11 @@ export default {
     },
     white: '#FFFFFF',
   },
+  fonts: {
+    roboto:{
+      regular: "Roboto-Regular",
+      medium: "Roboto-Medium",
+      bold: "Roboto-Bold"
+    }
+  }
 };
