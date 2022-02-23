@@ -1,9 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+
 import {RFValue} from 'react-native-responsive-fontsize';
 
 import Header from '../components/header/header';
 import PickerSelect from '../components/picker-select/picker-select';
+import NotFoundSubjectList from '../components/notFoundSubjectList/notFoundSubsjectList';
+
 import themes from '../themes/themes';
 
 const array = [
@@ -51,6 +54,7 @@ function SubjectList() {
       flex: 1,
     },
     selectShiftContainer: {
+      height: 96,
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 30,
@@ -66,6 +70,9 @@ function SubjectList() {
       fontFamily: themes.fonts.roboto.regular,
       color: themes.color.black,
       marginBottom: 5,
+    },
+    subjectListContainer: {
+      flex: 1,
     },
   });
 
@@ -90,6 +97,10 @@ function SubjectList() {
             customStyle={styles.pickerSelect}
           />
         </View>
+      </View>
+
+      <View style={styles.subjectListContainer}>
+        <NotFoundSubjectList />
       </View>
     </View>
   );
