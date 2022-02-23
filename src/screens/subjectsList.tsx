@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 import Header from '../components/header/header';
 import PickerSelect from '../components/picker-select/picker-select';
@@ -55,8 +55,13 @@ function SubjectList() {
       justifyContent: 'space-between',
       paddingHorizontal: 30,
     },
+    pickerSelect: {
+      width: RFValue(150),
+      height: RFValue(37),
+      backgroundColor: themes.color.blue.light,
+    },
     titleSelectShift: {
-      fontSize: 16,
+      fontSize: RFValue(16),
       lineHeight: 19,
       fontFamily: themes.fonts.roboto.regular,
       color: themes.color.black,
@@ -74,11 +79,7 @@ function SubjectList() {
           <PickerSelect
             listPickerItem={array}
             itemSelected={item}
-            customStyle={{
-              width: 150,
-              height: 37,
-              backgroundColor: themes.color.blue.light,
-            }}
+            customStyle={styles.pickerSelect}
           />
         </View>
         <View>
@@ -86,11 +87,7 @@ function SubjectList() {
           <PickerSelect
             listPickerItem={array}
             itemSelected={item}
-            customStyle={{
-              width: 150,
-              height: 37,
-              backgroundColor: themes.color.blue.light,
-            }}
+            customStyle={styles.pickerSelect}
           />
         </View>
       </View>
