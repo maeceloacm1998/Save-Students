@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
 
@@ -73,6 +73,27 @@ function SubjectList() {
     },
     subjectListContainer: {
       flex: 1,
+      marginVertical: 10,
+      marginHorizontal: 30,
+    },
+    cardContainer: {
+      height: 82,
+      backgroundColor: themes.color.primary.dark,
+      borderRadius: 5,
+      justifyContent: 'center',
+      paddingHorizontal: 16,
+    },
+    title: {
+      fontSize: RFValue(16),
+      lineHeight: 19,
+      fontFamily: themes.fonts.roboto.bold,
+      color: themes.color.secundary,
+    },
+    teacher: {
+      fontSize: RFValue(14),
+      lineHeight: 19,
+      fontFamily: themes.fonts.roboto.regular,
+      color: themes.color.black,
     },
   });
 
@@ -100,7 +121,13 @@ function SubjectList() {
       </View>
 
       <View style={styles.subjectListContainer}>
-        <NotFoundSubjectList />
+        {/* <NotFoundSubjectList /> */}
+        <Pressable>
+          <View style={styles.cardContainer}>
+            <Text style={styles.title}>Algoritmos em grafos</Text>
+            <Text style={styles.teacher}>Professor(a): Rothyele </Text>
+          </View>
+        </Pressable>
       </View>
     </View>
   );
