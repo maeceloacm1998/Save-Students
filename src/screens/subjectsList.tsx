@@ -47,6 +47,9 @@ const array = [
 ];
 
 function SubjectList({navigation}: ScreenProps) {
+  const backButton = () => navigation.navigate('Materias');
+  const logo = () => navigation.navigate('Materias');
+
   const item = (value: string) => {
     console.log(value);
   };
@@ -86,7 +89,7 @@ function SubjectList({navigation}: ScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header onPressLogo={logo} />
 
       <View style={styles.selectShiftContainer}>
         <View>
