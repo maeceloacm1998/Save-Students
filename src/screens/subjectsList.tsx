@@ -1,11 +1,12 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
 
 import Header from '../components/header/header';
 import PickerSelect from '../components/picker-select/picker-select';
 import NotFoundSubjectList from '../components/notFoundSubjectList/notFoundSubsjectList';
+import CardSubjectList from '../components/cardSubjectList/cardSubjectList';
 
 import themes from '../themes/themes';
 
@@ -49,6 +50,10 @@ function SubjectList() {
     console.log(value);
   };
 
+  const pressCard = () => {
+    console.log('pressCard');
+  };
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -75,25 +80,6 @@ function SubjectList() {
       flex: 1,
       marginVertical: 10,
       marginHorizontal: 30,
-    },
-    cardContainer: {
-      height: 82,
-      backgroundColor: themes.color.primary.dark,
-      borderRadius: 5,
-      justifyContent: 'center',
-      paddingHorizontal: 16,
-    },
-    title: {
-      fontSize: RFValue(16),
-      lineHeight: 19,
-      fontFamily: themes.fonts.roboto.bold,
-      color: themes.color.secundary,
-    },
-    teacher: {
-      fontSize: RFValue(14),
-      lineHeight: 19,
-      fontFamily: themes.fonts.roboto.regular,
-      color: themes.color.black,
     },
   });
 
@@ -122,12 +108,11 @@ function SubjectList() {
 
       <View style={styles.subjectListContainer}>
         {/* <NotFoundSubjectList /> */}
-        <Pressable>
-          <View style={styles.cardContainer}>
-            <Text style={styles.title}>Algoritmos em grafos</Text>
-            <Text style={styles.teacher}>Professor(a): Rothyele </Text>
-          </View>
-        </Pressable>
+        <CardSubjectList
+          title="Teste title"
+          teacher="teste subtitulo"
+          onPressCard={pressCard}
+        />
       </View>
     </View>
   );
