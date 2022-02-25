@@ -9,6 +9,7 @@ import NotFoundSubjectList from '../components/notFoundSubjectList/notFoundSubsj
 import CardSubjectList from '../components/cardSubjectList/cardSubjectList';
 
 import themes from '../themes/themes';
+import {ScreenProps} from '../utils/types';
 
 const array = [
   {
@@ -45,13 +46,13 @@ const array = [
   },
 ];
 
-function SubjectList() {
+function SubjectList({navigation}: ScreenProps) {
   const item = (value: string) => {
     console.log(value);
   };
 
   const pressCard = () => {
-    console.log('pressCard');
+    navigation.navigate('Cronograma');
   };
 
   const styles = StyleSheet.create({
