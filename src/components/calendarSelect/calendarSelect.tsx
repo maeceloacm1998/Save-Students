@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable array-callback-return */
+
 import React, {useEffect, useState} from 'react';
 import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 
@@ -12,11 +14,37 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import themes from '../../themes/themes';
 import Icon from '../icon/icon';
 
+// TODO Fazer o selectedDate receber uma data inicial e final
+// TODO Logica quando receber data inicial e final, marcar periodo e retornar todas as todas que foram selecionadas para filtrar
+
+export type CalendarSelect = {
+  selectedDate: (data: string) => void;
+  initialAndFinishDate: InitialAndFinishDatesProps;
+};
+
+export type InitialAndFinishDatesProps = {
+  initialDate: string | undefined;
+  finishDate: string | undefined;
+};
+
 type MarkedDatesType = {
   [key: string]: MarkingProps;
 };
 
-function CalendarSelect() {
+const translate = (props: CalendarSelect) => ({
+  selectedDate: props.selectedDate ? props.selectedDate : () => {},
+  initialAndFinishDate: props.initialAndFinishDate
+    ? props.initialAndFinishDate
+    : ({} as InitialAndFinishDatesProps),
+});
+
+function CalendarSelect(props: CalendarSelect) {
+  const {selectedDate, initialAndFinishDate} = translate(props);
+  const isCheckInitialAndFinishDates =
+    initialAndFinishDate.initialDate !== undefined &&
+    initialAndFinishDate.finishDate !== undefined;
+
+  const [getSelectDate, setSelectDate] = useState<string>();
   const [selectedDates, setSelectedDates] = useState<MarkedDatesType>({});
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -37,45 +65,49 @@ function CalendarSelect() {
   };
 
   const selectDay = (date: string): void => {
-    paintSelectedClickDate(date);
-  };
-
-  const selectedPeriodDate = () => {
-    const initialDate = '2022-02-01';
-    const finishDate = '2022-03-03';
-
-    const filterIntervalDate = eachDayOfInterval({
-      start: new Date(initialDate),
-      end: new Date(finishDate),
-    })
-      .map(item => {
-        const isCheck =
-          format(item, 'yyyy-MM-dd') === initialDate ||
-          format(item, 'yyyy-MM-dd') === finishDate;
-
-        const markedDates = {};
-        Object.defineProperty(markedDates, format(item, 'yyyy-MM-dd'), {
-          value: {color: isCheck ? '#70d7c7' : '#7eeedd', textColor: 'white'},
-          writable: true,
-          enumerable: true,
-          configurable: true,
-        });
-        return markedDates;
-      })
-      .reduce((acc, current) => ({
-        ...acc,
-        ...current,
-      }));
-
-    setSelectedDates(filterIntervalDate);
-  };
-
-  useEffect(() => {
-    if (showModal) {
-      selectedPeriodDate();
-      console.log(selectedDates);
+    if (getSelectDate) {
+      const getSelectedDates = selectedDates;
+      delete getSelectedDates[getSelectDate];
+      setSelectedDates(getSelectedDates);
     }
-  }, [showModal]);
+
+    paintSelectedClickDate(date);
+    setSelectDate(date);
+    selectedDate(date);
+  };
+
+  const selectedPeriodDate = (
+    initialAndFinishDates: InitialAndFinishDatesProps,
+  ) => {
+    const {initialDate, finishDate} = initialAndFinishDate;
+
+    if (initialDate && finishDate) {
+      const filterIntervalDate = eachDayOfInterval({
+        start: new Date(initialDate),
+        end: new Date(finishDate),
+      })
+        .map(item => {
+          const isCheck =
+            format(item, 'yyyy-MM-dd') === initialDate ||
+            format(item, 'yyyy-MM-dd') === finishDate;
+
+          const markedDates = {};
+          Object.defineProperty(markedDates, format(item, 'yyyy-MM-dd'), {
+            value: {color: isCheck ? '#70d7c7' : '#7eeedd', textColor: 'white'},
+            writable: true,
+            enumerable: true,
+            configurable: true,
+          });
+          return markedDates;
+        })
+        .reduce((acc, current) => ({
+          ...acc,
+          ...current,
+        }));
+
+      setSelectedDates(filterIntervalDate);
+    }
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -100,6 +132,12 @@ function CalendarSelect() {
     },
   });
 
+  useEffect(() => {
+    if (isCheckInitialAndFinishDates) {
+      selectedPeriodDate(initialAndFinishDate);
+    }
+  }, [initialAndFinishDate]);
+
   return (
     <>
       <View style={styles.container}>
@@ -113,7 +151,11 @@ function CalendarSelect() {
         </Pressable>
 
         <Pressable onPressIn={openModal} style={styles.dateContainer}>
-          <Text style={styles.dateText}>02/05/1998</Text>
+          <Text style={styles.dateText}>
+            {getSelectDate
+              ? format(new Date(getSelectDate), 'dd/MM/yyyy')
+              : '00/00/0000'}
+          </Text>
         </Pressable>
       </View>
 
