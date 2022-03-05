@@ -74,6 +74,7 @@ function CalendarSelect(props: CalendarSelect) {
     paintSelectedClickDate(date);
     setSelectDate(date);
     selectedDate(date);
+    setShowModal(false);
   };
 
   const selectedPeriodDate = (
