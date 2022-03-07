@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 
 import CalendarSelect from '../components/calendarSelect/calendarSelect';
+import CollapsibleComponent from '../components/collapsibleComponent/collapsibleComponent';
 import Header from '../components/header/header';
 import Icon from '../components/icon/icon';
-import themes from '../themes/themes';
 
+import themes from '../themes/themes';
 import {ScreenProps} from '../utils/types';
 
 function ScheduleList({navigation}: ScreenProps) {
@@ -15,20 +17,26 @@ function ScheduleList({navigation}: ScreenProps) {
   const [firstDateSelected, setFirstDateSelected] = useState<string>();
   const [secondDateSelected, setSecondDateSelected] = useState<string>();
 
-  const getFirstDate = (date: string) => {
+  const getFirstDate = (date: string): void => {
     setFirstDateSelected(date);
   };
 
-  const getSecondDate = (date: string) => {
+  const getSecondDate = (date: string): void => {
     setSecondDateSelected(date);
   };
 
+  const onPressAlert = (state: boolean): void => {
+    console.log(state);
+  };
   const styles = StyleSheet.create({
     containerCalendar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingHorizontal: 30,
+    },
+    containerScheduleList: {
+      padding: 30,
     },
   });
 
@@ -69,6 +77,14 @@ function ScheduleList({navigation}: ScreenProps) {
             color={themes.color.secundary}
           />
         </Pressable>
+      </View>
+
+      <View style={styles.containerScheduleList}>
+        <CollapsibleComponent
+          date="05/02"
+          title="Atividade avaliativa"
+          onPressAlert={onPressAlert}
+        />
       </View>
     </View>
   );
