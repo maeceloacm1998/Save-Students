@@ -47,15 +47,12 @@ const array = [
 ];
 
 function SubjectList({navigation}: ScreenProps) {
-  const backButton = () => navigation.navigate('Materias');
-  const logo = () => navigation.navigate('Materias');
+  const onPressLogo = () => navigation.navigate('Materias');
+  const onPressCard = () => navigation.navigate('Cronograma');
+  const onPressMenu = () => navigation.navigate('Menu');
 
   const item = (value: string) => {
     console.log(value);
-  };
-
-  const pressCard = () => {
-    navigation.navigate('Cronograma');
   };
 
   const styles = StyleSheet.create({
@@ -89,7 +86,7 @@ function SubjectList({navigation}: ScreenProps) {
 
   return (
     <View style={styles.container}>
-      <Header onPressLogo={logo} />
+      <Header onPressLogo={onPressLogo} onPressMenu={onPressMenu} />
 
       <View style={styles.selectShiftContainer}>
         <View>
@@ -115,7 +112,7 @@ function SubjectList({navigation}: ScreenProps) {
         <CardSubjectList
           title="Teste title"
           teacher="teste subtitulo"
-          onPressCard={pressCard}
+          onPressCard={onPressCard}
         />
       </View>
     </View>

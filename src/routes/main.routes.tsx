@@ -1,9 +1,13 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 
 import SubjectList from '../screens/subjectsList';
 import ScheduleList from '../screens/scheduleList';
 import SettingsScreduleList from '../screens/settingsScheduleList';
+import Menu from '../screens/menu';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +33,16 @@ function MainRoute() {
         component={SettingsScreduleList}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Menu"
+        component={Menu}
+        options={{
+          headerShown: false,
+          gestureEnabled: true,
+          gestureDirection: 'horizontal-inverted',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
     </Stack.Navigator>
