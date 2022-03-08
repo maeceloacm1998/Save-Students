@@ -11,8 +11,9 @@ import themes from '../themes/themes';
 import {ScreenProps} from '../utils/types';
 
 function ScheduleList({navigation}: ScreenProps) {
-  const backButton = () => navigation.navigate('Materias');
-  const logo = () => navigation.navigate('Materias');
+  const onPressBackButton = () => navigation.navigate('Materias');
+  const onPressLogo = () => navigation.navigate('Materias');
+  const onPressSettings = () => navigation.navigate('Settings');
 
   const [firstDateSelected, setFirstDateSelected] = useState<string>();
   const [secondDateSelected, setSecondDateSelected] = useState<string>();
@@ -44,8 +45,8 @@ function ScheduleList({navigation}: ScreenProps) {
     <View>
       <Header
         showBackButton
-        onPressBackButton={backButton}
-        onPressLogo={logo}
+        onPressBackButton={onPressBackButton}
+        onPressLogo={onPressLogo}
       />
 
       <View style={styles.containerCalendar}>
@@ -69,7 +70,7 @@ function ScheduleList({navigation}: ScreenProps) {
             }}
           />
         </View>
-        <Pressable>
+        <Pressable onPressIn={onPressSettings}>
           <Icon
             type="Ionicons"
             name="md-settings-outline"

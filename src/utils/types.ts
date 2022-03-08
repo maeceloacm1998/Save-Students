@@ -8,4 +8,5 @@ export type ScreenProps = {
 export type StackParamsList = {
   Materias: undefined;
   Cronograma: undefined;
+  Settings: undefined;
 };
