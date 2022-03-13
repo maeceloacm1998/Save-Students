@@ -7,7 +7,7 @@ import {StyleProp, ViewStyle} from 'react-native';
 
 import {Picker} from '@react-native-picker/picker';
 
-type ItemPicker = {
+export type ItemPicker = {
   label: string;
   value: string;
 };
