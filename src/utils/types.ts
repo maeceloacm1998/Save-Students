@@ -11,3 +11,10 @@ export type StackParamsList = {
   Settings: undefined;
   Menu: undefined;
 };
+
+export type PeriodItemsProps = {
+  id : string;
+  isEnable : boolean;
+  period : string;
+  translaction : string;
+}

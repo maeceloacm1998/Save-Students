@@ -1,15 +1,22 @@
-import React from 'react';
+/* eslint-disable array-callback-return */
+/* eslint-disable no-shadow */
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
 
+import {ref, onValue} from 'firebase/database';
+import database from '../services/firebase';
+
 import Header from '../components/header/header';
-import PickerSelect from '../components/picker-select/picker-select';
+import PickerSelect, {
+  ItemPicker,
+} from '../components/picker-select/picker-select';
 import NotFoundSubjectList from '../components/notFoundSubjectList/notFoundSubsjectList';
 import CardSubjectList from '../components/cardSubjectList/cardSubjectList';
 
 import themes from '../themes/themes';
-import {ScreenProps} from '../utils/types';
+import {PeriodItemsProps, ScreenProps} from '../utils/types';
 
 const array = [
   {
@@ -51,8 +58,34 @@ function SubjectList({navigation}: ScreenProps) {
   const onPressCard = () => navigation.navigate('Cronograma');
   const onPressMenu = () => navigation.navigate('Menu');
 
-  const item = (value: string) => {
+  const [periodItems, setPeriodItems] = useState<Array<ItemPicker>>(
+    [] as Array<ItemPicker>,
+  );
+  const [shiftItems, setShiftItems] = useState();
+
+  const periodItemSelected = (value: string) => {
     console.log(value);
+  };
+
+  const shiftItemSelected = (value: string) => {
+    console.log(value);
+  };
+
+  const getPeriodItems = () => {
+    const path = ref(database, 'types/period');
+
+    onValue(path, snapshot => {
+      const data: Array<PeriodItemsProps> = snapshot.val();
+
+      data.map(item => {
+        const newPeriodItems = {
+          label: item.translaction,
+          value: item.period,
+        };
+
+        setPeriodItems(oldValue => [...oldValue, newPeriodItems]);
+      });
+    });
   };
 
   const styles = StyleSheet.create({
@@ -84,6 +117,10 @@ function SubjectList({navigation}: ScreenProps) {
     },
   });
 
+  useEffect(() => {
+    getPeriodItems();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Header onPressLogo={onPressLogo} onPressMenu={onPressMenu} />
@@ -92,8 +129,8 @@ function SubjectList({navigation}: ScreenProps) {
         <View>
           <Text style={styles.titleSelectShift}>Período</Text>
           <PickerSelect
-            listPickerItem={array}
-            itemSelected={item}
+            listPickerItem={periodItems}
+            itemSelected={periodItemSelected}
             customStyle={styles.pickerSelect}
           />
         </View>
@@ -101,7 +138,7 @@ function SubjectList({navigation}: ScreenProps) {
           <Text style={styles.titleSelectShift}>Turno</Text>
           <PickerSelect
             listPickerItem={array}
-            itemSelected={item}
+            itemSelected={shiftItemSelected}
             customStyle={styles.pickerSelect}
           />
         </View>
