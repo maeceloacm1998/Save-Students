@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-shadow */
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
 
@@ -16,60 +17,28 @@ import NotFoundSubjectList from '../components/notFoundSubjectList/notFoundSubsj
 import CardSubjectList from '../components/cardSubjectList/cardSubjectList';
 
 import themes from '../themes/themes';
-import {PeriodItemsProps, ScreenProps} from '../utils/types';
-
-const array = [
-  {
-    label: 'Selecione',
-    value: '',
-  },
-  {
-    label: 'aqui',
-    value: 'aqui',
-  },
-  {
-    label: 'dali',
-    value: 'dali',
-  },
-  {
-    label: 'Java',
-    value: 'Java',
-  },
-  {
-    label: 'Yula',
-    value: 'Yula',
-  },
-  {
-    label: 'Americanas',
-    value: 'Americanas',
-  },
-  {
-    label: 'Iola',
-    value: 'Iola',
-  },
-  {
-    label: 'polita',
-    value: 'polita',
-  },
-];
+import {
+  PeriodItemsProps,
+  ScreenProps,
+  SelectedItemsProps,
+  ShiftItemsProps,
+  SubjectListProps,
+} from '../utils/types';
 
 function SubjectList({navigation}: ScreenProps) {
   const onPressLogo = () => navigation.navigate('Materias');
-  const onPressCard = () => navigation.navigate('Cronograma');
+  const onPressCard = (): void => navigation.navigate('Cronograma');
   const onPressMenu = () => navigation.navigate('Menu');
 
+  const [subjectsList, setSubjectsList] = useState<Array<SubjectListProps>>();
   const [periodItems, setPeriodItems] = useState<Array<ItemPicker>>(
     [] as Array<ItemPicker>,
   );
-  const [shiftItems, setShiftItems] = useState();
-
-  const periodItemSelected = (value: string) => {
-    console.log(value);
-  };
-
-  const shiftItemSelected = (value: string) => {
-    console.log(value);
-  };
+  const [shiftItems, setShiftItems] = useState<Array<ItemPicker>>(
+    [] as Array<ItemPicker>,
+  );
+  const [periodAndShiftSelected, setPeriodAndShiftSelected] =
+    useState<SelectedItemsProps>({} as SelectedItemsProps);
 
   const getPeriodItems = () => {
     const path = ref(database, 'types/period');
@@ -77,7 +46,15 @@ function SubjectList({navigation}: ScreenProps) {
     onValue(path, snapshot => {
       const data: Array<PeriodItemsProps> = snapshot.val();
 
-      data.map(item => {
+      data.map((item, index) => {
+        if (index === 0) {
+          const defaultItem = {
+            label: 'Selecione',
+            value: '',
+          };
+
+          setPeriodItems([defaultItem]);
+        }
         const newPeriodItems = {
           label: item.translaction,
           value: item.period,
@@ -87,6 +64,50 @@ function SubjectList({navigation}: ScreenProps) {
       });
     });
   };
+
+  const getShiftItems = () => {
+    const path = ref(database, 'types/shift');
+
+    onValue(path, snapshot => {
+      const data: Array<ShiftItemsProps> = snapshot.val();
+
+      data.map((item, index) => {
+        if (index === 0) {
+          const defaultItem = {
+            label: 'Selecione',
+            value: '',
+          };
+
+          setShiftItems([defaultItem]);
+        }
+
+        const newPeriodItems = {
+          label: item.translaction,
+          value: item.shift,
+        };
+
+        setShiftItems(oldValue => [...oldValue, newPeriodItems]);
+      });
+    });
+  };
+
+  const getSubjectsList = () => {
+    const path = ref(
+      database,
+      `period/${periodAndShiftSelected.period}/${periodAndShiftSelected.shift}`,
+    );
+
+    onValue(path, snapshot => {
+      const data = snapshot.val();
+      setSubjectsList(data);
+    });
+  };
+
+  const periodItemSelected = (value: string) =>
+    setPeriodAndShiftSelected({...periodAndShiftSelected, period: value});
+
+  const shiftItemSelected = (value: string) =>
+    setPeriodAndShiftSelected({...periodAndShiftSelected, shift: value});
 
   const styles = StyleSheet.create({
     container: {
@@ -119,7 +140,12 @@ function SubjectList({navigation}: ScreenProps) {
 
   useEffect(() => {
     getPeriodItems();
+    getShiftItems();
   }, []);
+
+  useEffect(() => {
+    getSubjectsList();
+  }, [periodAndShiftSelected]);
 
   return (
     <View style={styles.container}>
@@ -137,7 +163,7 @@ function SubjectList({navigation}: ScreenProps) {
         <View>
           <Text style={styles.titleSelectShift}>Turno</Text>
           <PickerSelect
-            listPickerItem={array}
+            listPickerItem={shiftItems}
             itemSelected={shiftItemSelected}
             customStyle={styles.pickerSelect}
           />
@@ -146,10 +172,20 @@ function SubjectList({navigation}: ScreenProps) {
 
       <View style={styles.subjectListContainer}>
         {/* <NotFoundSubjectList /> */}
-        <CardSubjectList
-          title="Teste title"
-          teacher="teste subtitulo"
-          onPressCard={onPressCard}
+        <FlatList
+          data={subjectsList}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <CardSubjectList
+              title={item.name}
+              teacher="aqui"
+              onPressCard={onPressCard}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => (
+            <View style={{height: 20, width: '100%'}} />
+          )}
         />
       </View>
     </View>

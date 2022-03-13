@@ -29,6 +29,7 @@ function ScheduleList({navigation}: ScreenProps) {
   const onPressAlert = (state: boolean): void => {
     console.log(state);
   };
+
   const styles = StyleSheet.create({
     containerCalendar: {
       flexDirection: 'row',
@@ -80,13 +81,13 @@ function ScheduleList({navigation}: ScreenProps) {
         </Pressable>
       </View>
 
-      <View style={styles.containerScheduleList}>
+      {/* <View style={styles.containerScheduleList}>
         <CollapsibleComponent
           date="05/02"
           title="Atividade avaliativa"
           onPressAlert={onPressAlert}
         />
-      </View>
+      </View> */}
     </View>
   );
 }

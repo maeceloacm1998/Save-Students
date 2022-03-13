@@ -11,8 +11,8 @@ import Logo from '../assets/logo.png';
 
 function Menu({navigation}: ScreenProps) {
   const onPressCloseButton = () => navigation.goBack();
-  const onPressLogo = () => navigation.navigate('Cronograma');
-  const onPressSubjectListButton = () => navigation.navigate('Cronograma');
+  const onPressLogo = () => navigation.navigate('Materias');
+  const onPressSubjectListButton = () => navigation.navigate('Materias');
   const onPressNotificationButton = () => navigation.navigate('Settings');
 
   const styles = StyleSheet.create({
