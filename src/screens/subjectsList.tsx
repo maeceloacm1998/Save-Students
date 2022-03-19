@@ -5,9 +5,12 @@ import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
+import {useSelector} from 'react-redux';
 
 import {ref, onValue} from 'firebase/database';
 import database from '../services/firebase';
+
+import {ApplicationReducer} from '../redux/reducers';
 
 import Header from '../components/header/header';
 import PickerSelect, {
@@ -37,29 +40,26 @@ function SubjectList({navigation}: ScreenProps) {
   const [shiftItems, setShiftItems] = useState<Array<ItemPicker>>(
     [] as Array<ItemPicker>,
   );
+
   const [periodAndShiftSelected, setPeriodAndShiftSelected] =
     useState<SelectedItemsProps>({} as SelectedItemsProps);
 
   const getPeriodItems = () => {
     const path = ref(database, 'types/period');
-
     onValue(path, snapshot => {
       const data: Array<PeriodItemsProps> = snapshot.val();
-
       data.map((item, index) => {
         if (index === 0) {
           const defaultItem = {
             label: 'Selecione',
             value: '',
           };
-
           setPeriodItems([defaultItem]);
         }
         const newPeriodItems = {
           label: item.translaction,
           value: item.period,
         };
-
         setPeriodItems(oldValue => [...oldValue, newPeriodItems]);
       });
     });
