@@ -2,8 +2,11 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable consistent-return */
 import { faker } from '@faker-js/faker';
-import { mockFirebaseRequest } from "../test";
+
 import FirebaseRequest from "./firebase-request";
+import { mockFirebaseRequest } from "../test";
+
+import { StatusCodeResponse } from '../../data/models';
 
 type SutTypes = {
   sut: FirebaseRequest,
@@ -35,6 +38,6 @@ describe('FirebaseRequest',() => {
 
     const response = sut.get();
 
-    expect(response.statusCode).toBe(500);
+    expect(response.statusCode).toBe(StatusCodeResponse.serverError);
   });
 });
