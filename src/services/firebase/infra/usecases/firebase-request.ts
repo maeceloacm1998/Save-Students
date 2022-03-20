@@ -15,7 +15,7 @@ class FirebaseRequest {
       const path = ref(database, this.url);
       onValue(path, snapshot => {
         if (!snapshot.exists()) {
-          throw new Error('Path não existe no firebase.');
+          throw new Error
         }
 
         response = {
@@ -27,13 +27,11 @@ class FirebaseRequest {
       if (err instanceof Error) {
         response = {
           statusCode: 404,
-          body: err.message,
         };
       }
 
       return {
         statusCode: 500,
-        body: 'Formato do Path incorreto',
       };
     }
     return response;
