@@ -1,7 +1,5 @@
 import {Dispatch} from "react"
-
-import { PeriodItemsProps } from "../../utils/types";
-// import { Ticket,Error } from "../../utils/types";
+import { PeriodItemsProps } from "../../utils";
 
 export interface GetPeriodItems{
   readonly type: "ON_GET_PERIOD_ITEMS";

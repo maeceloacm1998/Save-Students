@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable default-param-last */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PeriodItemsProps } from "../../utils/types"
+import { PeriodItemsProps } from "../../utils"
 
 type PeriodItemsModel = {
   periodItems: Array<PeriodItemsProps>

@@ -6,8 +6,9 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import Icon from '../components/icon/icon';
 
 import themes from '../themes/themes';
-import {ScreenProps} from '../utils/types';
+
 import Logo from '../assets/logo.png';
+import {ScreenProps} from '../utils';
 
 function Menu({navigation}: ScreenProps) {
   const onPressCloseButton = () => navigation.goBack();

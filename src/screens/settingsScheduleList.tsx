@@ -3,7 +3,7 @@ import {StyleSheet, Switch, Text, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import Header from '../components/header/header';
 import themes from '../themes/themes';
-import {ScreenProps} from '../utils/types';
+import {ScreenProps} from '../utils';
 
 function SettingsScreduleList({navigation}: ScreenProps) {
   const onPressBackButton = () => navigation.goBack();
