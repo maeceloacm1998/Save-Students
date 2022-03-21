@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import FirebaseRequest from "../usecases/firebase-request"
+import FirebaseClient from "../usecases/firebase-client"
 
-export const mockFirebaseRequest = (path:string) => {
-  const request = new FirebaseRequest(path)
+export const mockFirebaseRequest = async (path:string) => {
+  const request = new FirebaseClient()
   
-  const response = request.get();
+  const response = await request.get(path);
 
   return response;
 }
