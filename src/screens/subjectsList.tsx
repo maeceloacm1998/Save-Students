@@ -1,16 +1,19 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-shadow */
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
-import {useSelector} from 'react-redux';
-
-import {ref, onValue} from 'firebase/database';
-import database from '../services/firebase';
-
-import {ApplicationReducer} from '../redux/reducers';
 
 import Header from '../components/header/header';
 import PickerSelect, {
@@ -21,18 +24,22 @@ import CardSubjectList from '../components/cardSubjectList/cardSubjectList';
 
 import themes from '../themes/themes';
 import {
+  requesterFirebase,
   PeriodItemsProps,
   ScreenProps,
   SelectedItemsProps,
   ShiftItemsProps,
   SubjectListProps,
-} from '../utils/types';
+} from '../utils';
 
 function SubjectList({navigation}: ScreenProps) {
   const onPressLogo = () => navigation.navigate('Materias');
   const onPressCard = (): void => navigation.navigate('Cronograma');
   const onPressMenu = () => navigation.navigate('Menu');
 
+  const [initialBackground, setInitialBackground] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingSubjectList, setLoadingSubjectList] = useState<boolean>(false);
   const [subjectsList, setSubjectsList] = useState<Array<SubjectListProps>>();
   const [periodItems, setPeriodItems] = useState<Array<ItemPicker>>(
     [] as Array<ItemPicker>,
@@ -40,14 +47,17 @@ function SubjectList({navigation}: ScreenProps) {
   const [shiftItems, setShiftItems] = useState<Array<ItemPicker>>(
     [] as Array<ItemPicker>,
   );
-
   const [periodAndShiftSelected, setPeriodAndShiftSelected] =
     useState<SelectedItemsProps>({} as SelectedItemsProps);
 
-  const getPeriodItems = () => {
-    const path = ref(database, 'types/period');
-    onValue(path, snapshot => {
-      const data: Array<PeriodItemsProps> = snapshot.val();
+  const getPeriodItems = async () => {
+    const path = 'types/period';
+
+    const response = await requesterFirebase({method: 'GET', path});
+
+    if (response.statusCode === 200) {
+      const data: Array<PeriodItemsProps> = response.body;
+
       data.map((item, index) => {
         if (index === 0) {
           const defaultItem = {
@@ -62,14 +72,16 @@ function SubjectList({navigation}: ScreenProps) {
         };
         setPeriodItems(oldValue => [...oldValue, newPeriodItems]);
       });
-    });
+    }
   };
 
-  const getShiftItems = () => {
-    const path = ref(database, 'types/shift');
+  const getShiftItems = async () => {
+    const path = 'types/shift';
 
-    onValue(path, snapshot => {
-      const data: Array<ShiftItemsProps> = snapshot.val();
+    const response = await requesterFirebase({method: 'GET', path});
+
+    if (response.statusCode === 200) {
+      const data: Array<ShiftItemsProps> = response.body;
 
       data.map((item, index) => {
         if (index === 0) {
@@ -88,19 +100,35 @@ function SubjectList({navigation}: ScreenProps) {
 
         setShiftItems(oldValue => [...oldValue, newPeriodItems]);
       });
-    });
+    }
   };
 
-  const getSubjectsList = () => {
-    const path = ref(
-      database,
-      `period/${periodAndShiftSelected.period}/${periodAndShiftSelected.shift}`,
-    );
+  const getSubjectsList = async () => {
+    try {
+      if (periodAndShiftSelected.period && periodAndShiftSelected.shift) {
+        setLoadingSubjectList(true);
+      }
 
-    onValue(path, snapshot => {
-      const data = snapshot.val();
-      setSubjectsList(data);
-    });
+      const path = `period/${periodAndShiftSelected.period}/${periodAndShiftSelected.shift}`;
+      const response = await requesterFirebase({method: 'GET', path});
+      if (response.statusCode === 200) {
+        if (response.body.length > 0) {
+          setLoadingSubjectList(false);
+          setInitialBackground(false);
+          setSubjectsList(response.body);
+        }
+      }
+    } catch (e) {
+      console.log(e.message);
+      setSubjectsList([]);
+    }
+  };
+
+  const loadingData = async () => {
+    setLoading(true);
+    await getPeriodItems();
+    await getShiftItems();
+    setLoading(false);
   };
 
   const periodItemSelected = (value: string) =>
@@ -139,13 +167,21 @@ function SubjectList({navigation}: ScreenProps) {
   });
 
   useEffect(() => {
-    getPeriodItems();
-    getShiftItems();
+    setInitialBackground(true);
+    loadingData();
   }, []);
 
   useEffect(() => {
     getSubjectsList();
   }, [periodAndShiftSelected]);
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={25} color={themes.color.black} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -171,22 +207,37 @@ function SubjectList({navigation}: ScreenProps) {
       </View>
 
       <View style={styles.subjectListContainer}>
-        {/* <NotFoundSubjectList /> */}
-        <FlatList
-          data={subjectsList}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <CardSubjectList
-              title={item.name}
-              teacher="aqui"
-              onPressCard={onPressCard}
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => (
-            <View style={{height: 20, width: '100%'}} />
-          )}
-        />
+        {initialBackground ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <NotFoundSubjectList />
+          </View>
+        ) : loadingSubjectList ? (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size={25} color={themes.color.black} />
+          </View>
+        ) : (
+          <FlatList
+            data={subjectsList}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <CardSubjectList
+                title={item.name}
+                teacher={item.teacher}
+                onPressCard={onPressCard}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 20, width: '100%'}} />
+            )}
+          />
+        )}
       </View>
     </View>
   );

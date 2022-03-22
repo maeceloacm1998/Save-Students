@@ -45,7 +45,7 @@ function CardSubjectList(props: CardSubjectListProps) {
   });
 
   return (
-    <Pressable onPressIn={onPressCard}>
+    <Pressable onPress={onPressCard}>
       <View style={styles.cardContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.teacher}>Professor(a): {teacher}</Text>

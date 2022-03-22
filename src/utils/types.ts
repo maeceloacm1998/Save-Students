@@ -37,6 +37,7 @@ export type SubjectListProps = {
   dtCreate: string,
   id: string,
   name: string,
+  teacher:string,
   scheduleList: Array<ScheduleListProps>
 }
 
