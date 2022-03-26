@@ -59,6 +59,8 @@ function SubjectList({navigation}: ScreenProps) {
       const data: Array<PeriodItemsProps> = response.body;
 
       data.map((item, index) => {
+        const {isEnable, translaction, period} = item;
+
         if (index === 0) {
           const defaultItem = {
             label: 'Selecione',
@@ -66,11 +68,14 @@ function SubjectList({navigation}: ScreenProps) {
           };
           setPeriodItems([defaultItem]);
         }
-        const newPeriodItems = {
-          label: item.translaction,
-          value: item.period,
-        };
-        setPeriodItems(oldValue => [...oldValue, newPeriodItems]);
+
+        if (isEnable) {
+          const newPeriodItems = {
+            label: translaction,
+            value: period,
+          };
+          setPeriodItems(oldValue => [...oldValue, newPeriodItems]);
+        }
       });
     }
   };
@@ -84,21 +89,23 @@ function SubjectList({navigation}: ScreenProps) {
       const data: Array<ShiftItemsProps> = response.body;
 
       data.map((item, index) => {
+        const {isEnable, shift, translaction} = item;
+
         if (index === 0) {
           const defaultItem = {
             label: 'Selecione',
             value: '',
           };
-
           setShiftItems([defaultItem]);
         }
 
-        const newPeriodItems = {
-          label: item.translaction,
-          value: item.shift,
-        };
-
-        setShiftItems(oldValue => [...oldValue, newPeriodItems]);
+        if (isEnable) {
+          const newPeriodItems = {
+            label: translaction,
+            value: shift,
+          };
+          setShiftItems(oldValue => [...oldValue, newPeriodItems]);
+        }
       });
     }
   };
