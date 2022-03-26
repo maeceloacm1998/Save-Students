@@ -4,9 +4,15 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 import themes from '../../themes/themes';
-import Logo from '../../assets/monkey.png';
+import Monkey from '../../assets/monkey.png';
+import Cat from '../../assets/cat.png';
 
-function NotFoundSubjectList() {
+type NotFoundSubjectListType = {
+  type: 'NOTFOUND' | 'SELECTITEMS';
+  text: string;
+};
+
+function NotFoundSubjectList({type, text}: NotFoundSubjectListType) {
   const styles = StyleSheet.create({
     NotFoundContainer: {
       flex: 1,
@@ -30,8 +36,9 @@ function NotFoundSubjectList() {
 
   return (
     <View style={styles.NotFoundContainer}>
-      <Image source={Logo} style={styles.logo} />
-      <Text style={styles.text}>Selecione um período{`\n`}e um turno</Text>
+      {type === 'NOTFOUND' && <Image source={Cat} style={styles.logo} />}
+      {type === 'SELECTITEMS' && <Image source={Monkey} style={styles.logo} />}
+      <Text style={styles.text}>{text}</Text>
     </View>
   );
 }
