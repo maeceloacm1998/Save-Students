@@ -121,6 +121,8 @@ function SubjectList({navigation}: ScreenProps) {
     } catch (e) {
       console.log(e.message);
       setSubjectsList([]);
+      setInitialBackground(false);
+      setLoadingSubjectList(false);
     }
   };
 
@@ -163,6 +165,12 @@ function SubjectList({navigation}: ScreenProps) {
       flex: 1,
       marginVertical: 10,
       marginHorizontal: 30,
+    },
+    containerAlignCenter: {
+      borderWidth: 1,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 
@@ -208,18 +216,22 @@ function SubjectList({navigation}: ScreenProps) {
 
       <View style={styles.subjectListContainer}>
         {initialBackground ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <NotFoundSubjectList />
+          <View style={styles.containerAlignCenter}>
+            <NotFoundSubjectList
+              type="SELECTITEMS"
+              text="Selecione um período e um turno"
+            />
           </View>
         ) : loadingSubjectList ? (
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <View style={styles.containerAlignCenter}>
             <ActivityIndicator size={25} color={themes.color.black} />
+          </View>
+        ) : subjectsList?.length === 0 ? (
+          <View style={styles.containerAlignCenter}>
+            <NotFoundSubjectList
+              type="NOTFOUND"
+              text="Nenhuma matéria encontrada nesse periodo"
+            />
           </View>
         ) : (
           <FlatList
