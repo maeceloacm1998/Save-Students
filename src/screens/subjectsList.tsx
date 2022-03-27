@@ -112,9 +112,7 @@ function SubjectList({navigation}: ScreenProps) {
 
   const getSubjectsList = async () => {
     try {
-      if (periodAndShiftSelected.period && periodAndShiftSelected.shift) {
-        setLoadingSubjectList(true);
-      }
+      setLoadingSubjectList(true);
 
       const path = `period/${periodAndShiftSelected.period}/${periodAndShiftSelected.shift}`;
       const response = await requesterFirebase({method: 'GET', path});
@@ -174,7 +172,6 @@ function SubjectList({navigation}: ScreenProps) {
       marginHorizontal: 30,
     },
     containerAlignCenter: {
-      borderWidth: 1,
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
@@ -187,7 +184,13 @@ function SubjectList({navigation}: ScreenProps) {
   }, []);
 
   useEffect(() => {
-    getSubjectsList();
+    if (!periodAndShiftSelected.period || !periodAndShiftSelected.shift) {
+      setInitialBackground(true);
+    }
+
+    if (periodAndShiftSelected.period && periodAndShiftSelected.shift) {
+      getSubjectsList();
+    }
   }, [periodAndShiftSelected]);
 
   if (loading) {
