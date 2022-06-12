@@ -1,6 +1,5 @@
 export default {
   color: {
-
     primary: {
       dark: '#2130BE',
       light: '#ECF1FF',
@@ -25,10 +24,8 @@ export default {
     soft_backgroundL: "#FDFEFF"
   },
   fonts: {
-    roboto:{
-      regular: "Roboto-Regular",
-      medium: "Roboto-Medium",
-      bold: "Roboto-Bold"
-    }
+    roboto_regular: "Roboto-Regular",
+    roboto_medium: "Roboto-Medium",
+    roboto_bold: "Roboto-Bold"
   }
 };
