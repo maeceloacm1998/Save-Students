@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
+
 import themes from '../../themes/themes';
 
 const BackgroundContainer = styled.View`
@@ -25,4 +26,4 @@ const Image = styled.Image`
   width: ${RFValue(60)}px;
 `;
 
-export {BackgroundContainer, Container, Image};
+export { BackgroundContainer, Container, Image };
