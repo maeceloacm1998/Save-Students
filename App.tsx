@@ -13,7 +13,7 @@ function App() {
         <StatusBar
           translucent
           barStyle="dark-content"
-          backgroundColor={themes.color.primary.light}
+          backgroundColor={themes.color.ghost_white}
         />
         <Navigation />
       </View>
