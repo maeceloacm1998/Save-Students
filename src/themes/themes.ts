@@ -1,16 +1,15 @@
 export default {
   color: {
     primary: {
-      light: '#EFEFEF',
-      dark: '#E5E5E5',
+      dark: '#2130BE',
+      light: '#ECF1FF',
     },
-    secundary: '#E63A57',
-    secundaryLight: "#ec6b81",
-    blue: {
-      light: '#CAEBF2',
-    },
-    green: "#38CC59",
-    gray: "#767676",
+    secondary: '#A1A6CE',
+    success: "#21AB2F",
+    success_background: "#D7E8D9",
+    warning: "#F1AF43",
+    error: "#CC3A3A",
+    error_background: "#EED1D1",
     black: "#000000",
     white: '#FFFFFF',
   },
