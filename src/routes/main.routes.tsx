@@ -4,7 +4,7 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 
-import SubjectList from '../screens/subjectsList';
+import SubjectList from '../screens/SubjectList';
 import ScheduleList from '../screens/scheduleList';
 import SettingsScreduleList from '../screens/settingsScheduleList';
 import Menu from '../screens/menu';
@@ -39,8 +39,6 @@ function MainRoute() {
         name="Menu"
         component={Menu}
         options={{
-          headerShown: false,
-          gestureEnabled: true,
           gestureDirection: 'horizontal-inverted',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
