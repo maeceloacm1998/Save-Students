@@ -7,7 +7,7 @@ import {
 import SubjectList from '../screens/SubjectList';
 import ScheduleList from '../screens/scheduleList';
 import SettingsScreduleList from '../screens/settingsScheduleList';
-import Menu from '../screens/menu';
+import Menu from '../screens/Menu/index';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +41,7 @@ function MainRoute() {
         options={{
           gestureDirection: 'horizontal-inverted',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
