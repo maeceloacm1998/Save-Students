@@ -5,13 +5,14 @@ import React from 'react';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import themes from '../../themes/themes';
 
 type Icon = {
   name: string;
   color: string;
   size: number;
-  type: 'AntDesign' | 'Ionicons';
+  type: 'AntDesign' | 'Ionicons' | 'Feather';
 };
 
 const translate = (props: Icon) => ({
@@ -29,6 +30,8 @@ function Icon(props: Icon) {
       return <AntDesign name={name} size={size} color={color} />;
     case 'Ionicons':
       return <Ionicons name={name} size={size} color={color} />;
+    case 'Feather':
+      return <Feather name={name} size={size} color={color} />;
   }
 }
 
