@@ -20,7 +20,7 @@ const HeaderContainer = styled.View`
 `;
 
 const GoBackButton = styled(Ripple).attrs({
-  rippleColor: themes.color.primary.dark,
+  rippleColor: themes.color.primary.ripple,
 })`
   height: 30px;
   width: 90px;
