@@ -3,6 +3,7 @@ export default {
     primary: {
       dark: '#2130BE',
       light: '#ECF1FF',
+      ripple: '#2131be25',
     },
 
     secondary: '#A1A6CE',
