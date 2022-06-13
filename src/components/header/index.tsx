@@ -19,7 +19,7 @@ function Header({navigation}: HeaderType) {
   return (
     <BackgroundContainer>
       <Container>
-        <Ripple rippleColor={themes.color.primary.dark} onPress={openMenu}>
+        <Ripple rippleColor={themes.color.primary.ripple} onPress={openMenu}>
           <Icon
             type="Feather"
             name="menu"
